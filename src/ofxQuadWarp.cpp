@@ -4,6 +4,7 @@
 //
 
 #include "ofxQuadWarp.h"
+#include "Poco/Exception.h"
 
 ofxQuadWarp::ofxQuadWarp() {
     anchorSize = 10;
