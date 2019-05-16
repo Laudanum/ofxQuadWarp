@@ -5,6 +5,7 @@
 
 #include "ofxQuadWarp.h"
 #include "Poco/Exception.h"
+#include "opencv2/calib3d/calib3d.hpp" // needed for the cvFindHomography on 0.10.1
 
 ofxQuadWarp::ofxQuadWarp() {
     anchorSize = 10;
