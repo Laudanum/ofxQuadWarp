@@ -413,78 +413,87 @@ bool ofxQuadWarp::isShowing() {
 
 //----------------------------------------------------- save / load.
 void ofxQuadWarp::save(const string& path) {
-    ofXml xml;
-    xml.addChild("quadwarp");
-    xml.setTo("quadwarp");
-    xml.addChild("src");
-    xml.setTo("src");
-    for(int i=0; i<4; i++) {
-        xml.addChild("point");
-        xml.setToChild(i);
-        xml.setAttribute("x", ofToString(srcPoints[i].x));
-        xml.setAttribute("y", ofToString(srcPoints[i].y));
-        xml.setToParent();
-    }
-    xml.setToParent();
-    xml.addChild("dst");
-    xml.setTo("dst");
-    for(int i=0; i<4; i++) {
-        xml.addChild("point");
-        xml.setToChild(i);
-        xml.setAttribute("x", ofToString(dstPoints[i].x));
-        xml.setAttribute("y", ofToString(dstPoints[i].y));
-        xml.setToParent();
-    }
-    xml.setToParent();
+    ofxXmlSettings xml;
     
-    xml.setToParent();
-    xml.save(path);
+    xml.addTag("quadwarp");
+    xml.pushTag("quadwarp");
+    
+    xml.addTag("src");
+    xml.pushTag("src");
+    
+    for(int i=0; i<4; i++) {
+        xml.addTag("point");
+        xml.addAttribute("point", "x", ofToString(srcPoints[i].x), i);
+        xml.addAttribute("point", "y", ofToString(srcPoints[i].y), i);
+    }
+    
+    xml.popTag();
+    
+    xml.addTag("dst");
+    xml.pushTag("dst");
+    
+    for(int i=0; i<4; i++) {
+        xml.addTag("point");
+        xml.setAttribute("point", "x", ofToString(dstPoints[i].x), i);
+        xml.setAttribute("point", "y", ofToString(dstPoints[i].y), i);
+    }
+    
+    xml.saveFile(path);
 }
 
 void ofxQuadWarp::load(const string& path) {
-    ofXml xml;
-    bool bOk = xml.load(path);
-    if(bOk == false) {
+    
+    ofxXmlSettings xml;
+    if( !xml.loadFile(path) ) {
+        ofLogWarning() << "Failed to load quadwarp xml file: " << path;
         return;
     }
     
-    bOk = xml.setTo("quadwarp");
-    if(bOk == false) {
+    if(!xml.tagExists("quadwarp")) {
+        ofLogWarning() << "<quadwarp> tag missing in xml";
         return;
     }
     
-    bOk = xml.setTo("src");
-    if(bOk == false) {
+    xml.pushTag("quadwarp");
+    
+    if(!xml.tagExists("src")) {
+        ofLogWarning() << "<src> tag missing in xml";
         return;
     }
     
-    for(int i=0; i<xml.getNumChildren(); i++) {
-        bOk = xml.setToChild(i);
-        if(bOk == false) {
-            continue;
-        }
-        srcPoints[i].x = ofToFloat(xml.getAttribute("x"));
-        srcPoints[i].y = ofToFloat(xml.getAttribute("y"));
-        xml.setToParent();
-    }
-    xml.setToParent();
+    xml.pushTag("src");
+    int num_src_points = xml.getNumTags("point");
     
-    bOk = xml.setTo("dst");
-    if(bOk == false) {
+    if(num_src_points < 4) {
+        ofLogWarning() << "Invalid number of <src><point>, 4 expected";
         return;
     }
     
-    for(int i=0; i<xml.getNumChildren(); i++) {
-        bOk = xml.setToChild(i);
-        if(bOk == false) {
-            continue;
-        }
-        dstPoints[i].x = ofToFloat(xml.getAttribute("x"));
-        dstPoints[i].y = ofToFloat(xml.getAttribute("y"));
-        xml.setToParent();
+    for(int i = 0; i<4; i++) {
+        srcPoints[i].x = xml.getAttribute("point", "x", 0.0, i);
+        srcPoints[i].y = xml.getAttribute("point", "y", 0.0, i);
     }
-    xml.setToParent();
-    xml.setToParent();
+    
+    xml.popTag();
+    
+    if(!xml.tagExists("dst")) {
+        ofLogWarning() << "<dst> tag missing in xml";
+        return;
+    }
+    
+    xml.pushTag("dst");
+    int num_dst_points = xml.getNumTags("point");
+    
+    if(num_dst_points < 4) {
+        ofLogWarning() << "Invalid number of <dst><point>, 4 expected";
+        return;
+    }
+    
+    for(int i = 0; i<4; i++) {
+        dstPoints[i].x = xml.getAttribute("point", "x", 0.0, i);
+        dstPoints[i].y = xml.getAttribute("point", "y", 0.0, i);
+    }
+    
 }
 
 //----------------------------------------------------- show / hide.

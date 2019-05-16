@@ -8,6 +8,7 @@
 
 #include "ofMain.h"
 #include "ofxOpenCv.h"
+#include "ofxXmlSettings.h"
 
 class ofxQuadWarp 
 {
