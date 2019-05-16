@@ -1,2 +1,4 @@
 ofxOpenCv
+ofxPoco
 ofxQuadWarp
+ofxXmlSettings
