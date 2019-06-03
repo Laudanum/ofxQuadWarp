@@ -4,7 +4,7 @@
 //
 
 #include "ofxQuadWarp.h"
-#include "Poco/Exception.h"
+// #include "Poco/Exception.h"
 #include "opencv2/calib3d/calib3d.hpp" // needed for the cvFindHomography on 0.10.1
 
 ofxQuadWarp::ofxQuadWarp() {
@@ -66,15 +66,15 @@ void ofxQuadWarp::disableMouseControls() {
         return;
     }
     bMouseEnabled = false;
-    try {
+    //try {
         ofRemoveListener(ofEvents().mouseMoved, this, &ofxQuadWarp::onMouseMoved);
         ofRemoveListener(ofEvents().mousePressed, this, &ofxQuadWarp::onMousePressed);
         ofRemoveListener(ofEvents().mouseDragged, this, &ofxQuadWarp::onMouseDragged);
         ofRemoveListener(ofEvents().mouseReleased, this, &ofxQuadWarp::onMouseReleased);
-    }
+    /*}
     catch(Poco::SystemException) {
         return;
-    }
+    }*/
 }
 
 void ofxQuadWarp::enableKeyboardShortcuts() {
@@ -90,12 +90,12 @@ void ofxQuadWarp::disableKeyboardShortcuts() {
         return;
     }
     bKeyboardShortcuts = false;
-    try {
+    //try {
         ofRemoveListener(ofEvents().keyPressed, this, &ofxQuadWarp::keyPressed);
-    }
-    catch(Poco::SystemException) {
-        return;
-    }
+    //}
+    //catch(Poco::SystemException) {
+    //    return;
+    //}
 }
 
 //----------------------------------------------------- source / target points.
