@@ -24,9 +24,11 @@ public:
     
     void setSourceRect(const ofRectangle& rect);
     void setSourcePoints(const vector<ofPoint>& points);
+    void setSourcePoints(const vector<glm::vec3>& points);
     ofPoint* getSourcePoints();
     void setTargetRect(const ofRectangle& rect);
     void setTargetPoints(const vector<ofPoint>& points);
+    void setTargetPoints(const vector<glm::vec3>& points);
     ofPoint* getTargetPoints();
     
     OF_DEPRECATED_MSG("Use enableMouseControls() and enableKeyboardShortcuts() instead.", void enable());

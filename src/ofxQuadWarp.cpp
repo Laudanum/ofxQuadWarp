@@ -113,6 +113,14 @@ void ofxQuadWarp::setSourcePoints(const vector<ofPoint>& points) {
     }
 }
 
+void ofxQuadWarp::setSourcePoints(const vector<glm::vec3>& points) {
+    int t = MIN(4, points.size());
+    for(int i=0; i<t; i++) {
+        srcPoints[i].set(points[i]);
+    }
+}
+
+
 ofPoint* ofxQuadWarp::getSourcePoints() {
     return &srcPoints[0];
 }
@@ -122,6 +130,13 @@ void ofxQuadWarp::setTargetRect(const ofRectangle& r) {
 	dstPoints[1].set(r.x + r.width, r.y);
 	dstPoints[2].set(r.x + r.width, r.y + r.height);
 	dstPoints[3].set(r.x, r.y + r.height);
+}
+
+void ofxQuadWarp::setTargetPoints(const vector<glm::vec3>& points) {
+    int t = MIN(4, points.size());
+    for(int i=0; i<t; i++) {
+        dstPoints[i].set(points[i]);
+    }
 }
 
 void ofxQuadWarp::setTargetPoints(const vector<ofPoint>& points) {
